@@ -10,16 +10,7 @@ def login(request):
         if uf.is_valid():
             username = uf.cleaned_data['username']
             password = uf.cleaned_data['password']
-            '''
-            user_result = User.objects.filter(username=username, password=password)
-            if len(user_result) > 0:
-                return render_to_response('account/success.html', {'operation': "login"})
-            else:
-                return render(request, 'account/login.html', {
-                    'uf': uf,
-                    'error_message': "The user doesn't exist!",
-                })
-            '''
+
             user_result = User.objects.filter(username=username)
             if len(user_result) > 0:
                 if user_result[0].password == password:
