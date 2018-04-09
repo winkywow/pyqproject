@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user_login.username }}</title>
+</head>
+<body>
+    <h1>{{ user_login.username }}</h1>
+    <form action="{% url 'pyq:post_edit_add' user_login.id  post_edit.pid %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label><textarea name="context" placeholder="what do you want to post?">{{ post_edit.context }}</textarea></label>
+            <input type="submit" value="submit" />
+        </div>
+    </form>
+</body>
+</html>
