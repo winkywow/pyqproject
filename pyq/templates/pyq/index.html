@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user_login.username }}</title>
+</head>
+<body>
+<h1>{{ user_login.username }}</h1>
+<div class="list-group col-md-10 col-md-offset-1 well">
+    <div class="list-group-item">
+        {% for post in posts %}
+        <h4 class="list-group-item-heading">{{ post.user_now }}:{{ post.context }}</h4>
+        <p class="list-group-item-text">{{ post.created_time }}:{{ post.edit_time }}</p>
+        <input type="hidden" class="post_id" value="{{ post.pid }}"/>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+
+<form action="{% url 'pyq:post_add' user_login.id %}" method='post' enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group col-md-10">
+        <textarea name="context" id="context" class="form-control" placeholder="What do you want to post?">
+        </textarea>
+    </div>
+    <div class="form-group col-md-4">
+        <input type="submit" class="btn btn-lg btn-primary" value="submit"/>
+    </div>
+</form>
+</body>
+</html>
