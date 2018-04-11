@@ -37,7 +37,16 @@
             {% if post.user_now == user_login or user_login.permission %}
                 <form action="{% url 'pyq:post_delete' user_login.id post.pid %}" method="post">
                 {% csrf_token %}
-                    <input type="submit" value="delete" />
+
+                    <button onclick="return DeleteConfirmFunc()">Delete</button>
+                    <script>
+                        function DeleteConfirmFunc()
+                        {
+                            return confirm("Are u sure to DELETE?");
+                        }
+                    </script>
+
+
                 </form>
             {% endif %}
             </td>
