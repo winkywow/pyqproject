@@ -18,7 +18,7 @@
 </form>
 
 <div>
-    <div>
+    <div id="post_list_item">
         {% for post in posts %}
             <div>
             <h4>{{ post.user_now }}:{{ post.context }}</h4>
@@ -29,7 +29,22 @@
             {% if post.user_now == user_login %}
                 <form action="{% url 'pyq:post_edit' user_login.id post.pid %}" method="post">
                 {% csrf_token %}
+
                     <input type="submit" value="edit" />
+                    <!--
+                    <button name="context" onclick="return EditPromptFunc()">Edit</button>
+                    <script>
+                        function EditPromptFunc()
+                        {
+                            var context = prompt("What do u want to edit?", "hello");
+                            //return confirm("what do u?")
+
+                            if (context != null)
+                                return context;
+                            else return false;
+                        }
+                    </script>
+                    -->
                 </form>
             {% endif %}
             </td>
@@ -37,7 +52,9 @@
             {% if post.user_now == user_login or user_login.permission %}
                 <form action="{% url 'pyq:post_delete' user_login.id post.pid %}" method="post">
                 {% csrf_token %}
-
+                    <!--
+                    <input type="submit" value="delete" />
+                    -->
                     <button onclick="return DeleteConfirmFunc()">Delete</button>
                     <script>
                         function DeleteConfirmFunc()
@@ -45,8 +62,6 @@
                             return confirm("Are u sure to DELETE?");
                         }
                     </script>
-
-
                 </form>
             {% endif %}
             </td>
