@@ -6,18 +6,21 @@ from account.models import User
 from django.http import HttpResponse, Http404
 
 
-# Create your views here.
-def index(request, user_id):
+def show(request, user_login):
     posts = list(Post.objects.all())[-1:-7:-1]
-    user_login = get_object_or_404(User, pk=user_id)
     return render(request, 'pyq/index.html', {
         'posts': posts,
         'user_login': user_login,
     })
 
 
-def post_edit(request, user_id, post_id):
-    user_login = get_object_or_404(User, pk=user_id)
+def index(request, user_sid):
+    user_login = get_object_or_404(User, sid=user_sid)
+    return show(request, user_login)
+
+
+def post_edit(request, user_sid, post_id):
+    user_login = get_object_or_404(User, sid=user_sid)
     post_now = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         if user_login == post_now.user_now:
@@ -25,15 +28,11 @@ def post_edit(request, user_id, post_id):
                 'post_edit': post_now,
                 'user_login': user_login,
             })
-    posts = list(Post.objects.all())[-1:-7:-1]
-    return render(request, 'pyq/index.html', {
-        'posts': posts,
-        'user_login': user_login,
-    })
+    return show(request, user_login)
 
 
-def post_edit_add(request, user_id, post_id):
-    user_login = get_object_or_404(User, pk=user_id)
+def post_edit_add(request, user_sid, post_id):
+    user_login = get_object_or_404(User, sid=user_sid)
     post_now = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         if user_login == post_now.user_now:
@@ -42,28 +41,20 @@ def post_edit_add(request, user_id, post_id):
                 context = post_nn.cleaned_data['context']
                 post_now.context = context
                 post_now.save()
-    posts = list(Post.objects.all())[-1:-7:-1]
-    return render(request, 'pyq/index.html', {
-        'posts': posts,
-        'user_login': user_login,
-    })
+    return show(request, user_login)
 
 
-def post_delete(request, user_id, post_id):
-    user_login = get_object_or_404(User, pk=user_id)
+def post_delete(request, user_sid, post_id):
+    user_login = get_object_or_404(User, sid=user_sid)
     post_now = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         if user_login == post_now.user_now or user_login.permission:
             post_now.delete()
-    posts = list(Post.objects.all())[-1:-7:-1]
-    return render(request, 'pyq/index.html', {
-        'posts': posts,
-        'user_login': user_login,
-    })
+    return show(request, user_login)
 
 
-def post_add(request, user_id):
-    user_login = get_object_or_404(User, pk=user_id)
+def post_add(request, user_sid):
+    user_login = get_object_or_404(User, sid=user_sid)
     if request.method == 'POST':
         post_form = PostForms(request.POST)
         if post_form.is_valid():
@@ -73,8 +64,4 @@ def post_add(request, user_id):
                 context=context,
             )
             nn_post.save()
-    posts = list(Post.objects.all())[-1:-7:-1]
-    return render(request, 'pyq/index.html', {
-        'posts': posts,
-        'user_login': user_login,
-    })
+    return show(request, user_login)

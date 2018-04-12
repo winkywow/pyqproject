@@ -22,7 +22,7 @@ def login(request):
             user_result = User.objects.filter(Q(sid=user_for_login) | Q(username=user_for_login))
             if len(user_result) > 0:
                 if user_result[0].password == password:
-                    return HttpResponseRedirect(reverse('pyq:index', args=(user_result[0].id,)))
+                    return HttpResponseRedirect(reverse('pyq:index', args=(user_result[0].sid,)))
                 else:
                     return render(request, 'account/login.html', {
                         'uf': uf,
