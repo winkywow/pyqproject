@@ -7,7 +7,7 @@
 <body>
 <h1>{{ user_login.username }}</h1>
 
-<form action="{% url 'pyq:post_action' user_login.sid user_login.id %}" method='post' enctype="multipart/form-data">
+<form action="{% url 'pyq:post_action' user_login.sid pages user_login.id %}" method='post' enctype="multipart/form-data">
     {% csrf_token %}
     <div>
         <textarea name="context" placeholder="What do you want to post?"></textarea>
@@ -28,7 +28,7 @@
             <tr>
             <td>
             {% if post.user_now == user_login %}
-                <form action="{% url 'pyq:post_action' user_login.sid post.pid %}" method="post">
+                <form action="{% url 'pyq:post_action' user_login.sid pages post.pid %}" method="post">
                 {% csrf_token %}
                     <div>
                     <input type="submit" value="edit" />
@@ -54,7 +54,7 @@
             </td>
             <td>
             {% if post.user_now == user_login or user_login.permission %}
-                <form action="{% url 'pyq:post_action' user_login.sid post.pid %}" method="post">
+                <form action="{% url 'pyq:post_action' user_login.sid pages post.pid %}" method="post">
                 {% csrf_token %}
                     <!--
                     <input type="submit" value="delete" />
@@ -77,8 +77,19 @@
         {% endfor %}
     </div>
 </div>
-
-
+<!--<div id="skip"></div>-->
+<div>
+    {% if more_pages %}
+        <form action="{% url 'pyq:post_action' user_login.sid pages user_login.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="load more">
+            <!--<input type="hidden" name="pages" value="<%=pages%>">-->
+            <input type="hidden" name="type_change" value="load_more">
+        </form>
+    {% else %}
+        <p>Already the last post</p>
+    {% endif %}
+</div>
 
 </body>
 </html>
