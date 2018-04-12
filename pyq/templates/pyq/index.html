@@ -3,23 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ user_login.username }}</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pyq/index.css' %}" />
+
 </head>
-<body>
+
+<body class="index">
 <h1>{{ user_login.username }}</h1>
 
 <form action="{% url 'pyq:post_add' user_login.id %}" method='post' enctype="multipart/form-data">
     {% csrf_token %}
     <div>
-        <textarea name="context" placeholder="What do you want to post?"></textarea>
+        <textarea style="" name="context" placeholder="What do you want to post?" rows="3" cols='120'></textarea>
     </div>
     <div class="form-group col-md-4">
-        <input type="submit" value="submit"/>
+        <input type="submit" value="submit" style="float: right"/><br>
     </div>
 </form>
+<hr>
 
 <div>
     <div>
         {% for post in posts %}
+            <form>
+                <div class="fieldset">
+                    <h1><span>{{ post.user_now }}</span></h1>
+                    <p><content>{{ post.context }}</content><br>
+                        created: {{ post.created_time }}&nbsp &nbsp &nbsp edited: {{ post.edit_time }}
+                    </p>
+                    <table align="center">
+                    <tr>
+                    <td>
+                    {% if post.user_now == user_login %}
+                        <form action="{% url 'pyq:post_edit' user_login.id post.pid %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="edit" style="float: left"/>
+                        </form>
+                    {% endif %}
+                    </td>&nbsp
+                    <td>
+                    {% if post.user_now == user_login or user_login.permission %}
+                        <form action="{% url 'pyq:post_delete' user_login.id post.pid %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="delete" style="float: right"/>
+                        </form>
+                    {% endif %}
+                    </td>
+                    </tr>
+                    </table>
+                </div>
+            </form>
+    <!--
             <div>
             <h4>{{ post.user_now }}:{{ post.context }}</h4>
             <p>created:{{ post.created_time }} edited:{{ post.edit_time }}</p>
@@ -44,6 +79,7 @@
             </tr>
             </table>
             </div>
+    -->
         {% endfor %}
     </div>
 </div>

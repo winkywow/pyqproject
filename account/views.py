@@ -25,15 +25,15 @@ def login(request):
                 if user_result[0].password == password:
                     return HttpResponseRedirect(reverse('pyq:index', args=(user_result[0].id,)))
                 else:
-                    return render(request, 'account/login.html', {
+                    return render(request, 'account/logging.html', {
                         'uf': uf,
                         'error_message': "Please input the correct password!",
                     })
             else:
-                return render(request, 'account/login.html', {
+                return render(request, 'account/logging.html', {
                     'uf': uf,
                     'error_message': "The user doesn't exist!",
                 })
     else:
         uf = UserFormLogin()
-        return render(request, 'account/login.html', {'uf': uf})
+        return render(request, 'account/logging.html', {'uf': uf})
