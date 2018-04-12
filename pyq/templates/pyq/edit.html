@@ -6,10 +6,12 @@
 </head>
 <body>
     <h1>{{ user_login.username }}</h1>
-    <form action="{% url 'pyq:post_edit_add' user_login.id  post_edit.pid %}" method="post">
+    <form action="{% url 'pyq:post_action' user_login.sid pages post_edit.pid %}" method="post">
         {% csrf_token %}
         <div>
             <label><textarea name="context" placeholder="what do you want to post?">{{ post_edit.context }}</textarea></label>
+            <input type="hidden" name="type_change" value="edit_add"/>
+            <!--<input type="hidden" name="post_id" value=" post_edit.id " />-->
             <input type="submit" value="submit" />
         </div>
     </form>
