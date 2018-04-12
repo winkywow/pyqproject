@@ -7,12 +7,13 @@
 <body>
 <h1>{{ user_login.username }}</h1>
 
-<form action="{% url 'pyq:post_add' user_login.sid %}" method='post' enctype="multipart/form-data">
+<form action="{% url 'pyq:post_action' user_login.sid user_login.id %}" method='post' enctype="multipart/form-data">
     {% csrf_token %}
     <div>
         <textarea name="context" placeholder="What do you want to post?"></textarea>
+        <input type="hidden" name="type_change" value="add"/>
     </div>
-    <div class="form-group col-md-4">
+    <div>
         <input type="submit" value="submit"/>
     </div>
 </form>
@@ -27,10 +28,13 @@
             <tr>
             <td>
             {% if post.user_now == user_login %}
-                <form action="{% url 'pyq:post_edit' user_login.sid post.pid %}" method="post">
+                <form action="{% url 'pyq:post_action' user_login.sid post.pid %}" method="post">
                 {% csrf_token %}
-
+                    <div>
                     <input type="submit" value="edit" />
+                    <input type="hidden" name="type_change" value="edit"/>
+                    <!--<input type="hidden" name="post_id" value=<%=post.id%> />-->
+                    </div>
                     <!--
                     <button name="context" onclick="return EditPromptFunc()">Edit</button>
                     <script>
@@ -50,7 +54,7 @@
             </td>
             <td>
             {% if post.user_now == user_login or user_login.permission %}
-                <form action="{% url 'pyq:post_delete' user_login.sid post.pid %}" method="post">
+                <form action="{% url 'pyq:post_action' user_login.sid post.pid %}" method="post">
                 {% csrf_token %}
                     <!--
                     <input type="submit" value="delete" />
@@ -62,6 +66,8 @@
                             return confirm("Are u sure to DELETE?");
                         }
                     </script>
+                    <input type="hidden" name="type_change" value="delete"/>
+                    <!--<input type="hidden" name="post_id" value=" post.id" />-->
                 </form>
             {% endif %}
             </td>
