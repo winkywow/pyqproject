@@ -52,12 +52,11 @@ def post_action(request, user_sid, pages, post_id):
         elif request.POST['type_change'] == 'edit':
             post_now = get_object_or_404(Post, pk=post_id)
             if user_login == post_now.user_now:
-                return show(request, user_login, pages+1)
-                '''render(request, 'pyq/edit.html', {
+                return render(request, 'pyq/edit.html', {
                     'post_edit': post_now,
                     'user_login': user_login,
                     'pages': pages,
-                })'''
+                })
         elif request.POST['type_change'] == 'delete':
             post_now = get_object_or_404(Post, pk=post_id)
             if user_login == post_now.user_now or user_login.permission:
