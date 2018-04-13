@@ -10,8 +10,8 @@
 </head>
 
 <body class="index">
-<h1>{{ user_login.username }}</h1>
 
+<h1>{{ user_login.username }}</h1>
 <form action="{% url 'pyq:post_action' user_login.sid pages user_login.id %}" method='post' enctype="multipart/form-data">
     {% csrf_token %}
     <div>
@@ -38,10 +38,11 @@
                     <td>
                     {% if post.user_now == user_login %}
                         <form action="{% url 'pyq:post_action' user_login.sid pages post.pid %}" method="post">
-                            <div>
+                            {% csrf_token %}
+
                             <input type="submit" value="edit"/>
                             <input type="hidden" name="type_change" value="edit"/>
-                            </div>
+
                         </form>
                     {% endif %}
                     </td>
