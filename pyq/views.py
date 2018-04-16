@@ -4,6 +4,7 @@ from .forms import PostForms
 from .models import Post
 from account.models import User
 from django.http import HttpResponse, Http404
+from django.views.decorators.csrf import csrf_exempt
 
 
 per_post = 6
@@ -54,6 +55,7 @@ def post_action(request, user_sid, pages, post_id):
                 return render(request, 'pyq/edit.html', {
                     'post_edit': post_now,
                     'user_login': user_login,
+                    'pages': pages,
                 })
         elif request.POST['type_change'] == 'delete':
             post_now = get_object_or_404(Post, pk=post_id)

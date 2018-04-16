@@ -9,6 +9,5 @@ urlpatterns = [
     # path('<str:user_sid>/<int:post_id>/post_delete', views.post_delete, name='post_delete'),
     # path('<str:user_sid>/<int:post_id>/post_edit', views.post_edit, name='post_edit'),
     # path('<str:user_sid>/post_edit_add', views.post_edit_add, name='post_edit_add'),
-
     path('<str:user_sid>/<int:pages>/<int:post_id>/post', views.post_action, name='post_action'),
 ]
