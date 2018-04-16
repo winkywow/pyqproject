@@ -80,17 +80,5 @@
     {% endif %}
 </div>
 
-<div>
-    {% if more_pages %}
-        <form action="{% url 'pyq:post_action' user_login.sid pages user_login.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="load more">
-            <input type="hidden" name="type_change" value="load_more">
-        </form>
-    {% else %}
-        <p>Already the last post</p>
-    {% endif %}
-</div>
-
 </body>
 </html>
