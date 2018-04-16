@@ -19,15 +19,21 @@ body.index{
     -moz-border-radius: 4px;
     border-radius: 4px;
     margin-top: 1em;
-    width: 60%;
+    width: 50%;
     background: #ffefef;
-    text-align: center;
     margin: 50px auto;
+}
+
+.index .fieldset .not_self_post{
+    text-align: left;
+}
+
+.index .fieldset .self_post{
+    text-align: right;
 }
 
 .index .fieldset h1{
     font-size: 16px;
-    text-align: center;
 }
 
 .index .fieldset h1 span{
@@ -43,6 +49,8 @@ body.index{
     line-height: 150%;
     text-decoration: none;
     text-indent: 0px;
+    color: #666666;
+    font-size: 15px;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 .index .fieldset p content{
