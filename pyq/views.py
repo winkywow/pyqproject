@@ -123,3 +123,5 @@ def post_add(request, user_sid):
                 nn_post.save()
     return show(request, user_login)
 '''
+
+
