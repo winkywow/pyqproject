@@ -37,7 +37,7 @@
                 {{ error_message }}
                 </strong></p>
             {% endif %}
-            <form method="post" id="login-form" enctype="multipart/form-data">
+            <form action="{% url "account:login" %}" method="post" id="login-form" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ uf.as_p }}
@@ -55,7 +55,9 @@
             </div>
             </form>
         </div>
-
+        <div>
+            <a href="{% url 'account:register' %}">Register</a>
+        </div>
         <br class="clear" />
     </div>
     <div id="footer"></div>

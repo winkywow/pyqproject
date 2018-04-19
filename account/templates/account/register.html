@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>user_login | pyq</title>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'account/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'account/jQuery.md5.js' %}" ></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#register_submit").submit(function(){
+                var hash = $.md5($("#id_password").val());
+                $("#id_password").val(hash);
+                hash = $.md5($("#id_password1").val());
+                $("#id_password1").val(hash);
+            });
+        });
+    </script>
+</head>
+<style type="text/css">
+    body{
+        color: #ffa500;
+        background: #f8f8f8;
+        padding: 0 5em;
+        margin: 0;
+    }
+    h1{
+        padding: 2em 1em;
+        background: #667755;
+    }
+    h2{
+        color: #bf8;
+        border-top: 1px dotted #ffffff;
+        margin-top: 2em;
+    }
+    p{
+        margin: 1em 0;
+    }
+</style>
+<body>
+<h1>PYQ account Register</h1>
+<hr>
+<form id="register_submit"  method='post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if error_message %}
+        <p><strong>
+            {{ error_message }}
+        </strong></p>
+    {% endif %}
+    {{ uf.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+</body>
+</html>
