@@ -101,6 +101,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Used to log the user in.
+# See: https://docs.djangoproject.com/en/1.7/ref/settings/#login-url
+# LOGIN_URL = '/account/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
