@@ -41,6 +41,14 @@ def login(request):
     })
 
 
+def logout(request):
+    try:
+        del request.session['myUser']
+    except KeyError:
+        pass
+    return HttpResponseRedirect(reverse('account:login'))
+
+
 def register(request):
     err = ''
     if request.method == 'POST':

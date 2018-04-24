@@ -12,6 +12,11 @@
 <body class="index">
 
 <h1>{{ user_login.username }}</h1>
+<form action="{% url 'account:logout' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Log Out" />
+</form>
+<br>
 
 <form action="{% url 'pyq:post_action' user_login.sid pages user_login.id %}" method='post' enctype="multipart/form-data">
     {% csrf_token %}
