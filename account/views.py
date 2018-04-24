@@ -32,7 +32,7 @@ def login(request):
             err, user_result = User.verify_login_info(user_for_login, password)
             if err == '':
                 request.session['myUser'] = user_result[0].sid
-                return HttpResponseRedirect(reverse('pyq:index', args=(user_result[0].sid,)))
+                return HttpResponseRedirect(reverse('pyq:index'))
     else:
         uf = UserFormLogin()
     return render(request, 'account/login2.html', {

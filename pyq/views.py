@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 from .forms import PostForms
@@ -7,15 +9,27 @@ from account.models import User
 from account.views import check_session
 
 
-@check_session
-def index(request, user_sid):
+def get_user_from_request(request):
+    user_sid = request.session.get('myUser', None)
+    if not user_sid:
+        return None
     user_login = get_object_or_404(User, sid=user_sid)
+    return user_login
+
+
+# @check_session
+def index(request):
+    user_login = get_user_from_request(request)
+    if not user_login:
+        return HttpResponseRedirect(reverse('account:login'))
     return Post.show(request, user_login, 1)
 
 
-@check_session
-def post_action(request, user_sid, pages, post_id):
-    user_login = get_object_or_404(User, sid=user_sid)
+# @check_session
+def post_action(request, pages, post_id):
+    user_login = get_user_from_request(request)
+    if not user_login:
+        return HttpResponseRedirect(reverse('account:login'))
     if request.method == 'POST':
         if request.POST['type_change'] == 'add':
             post_form = PostForms(request.POST)
@@ -44,56 +58,3 @@ def post_action(request, user_sid, pages, post_id):
         elif request.POST['type_change'] == 'load_more':
             pages += 1
     return Post.show(request, user_login, pages)
-
-
-'''
-def post_edit(request, user_sid, post_id):
-    user_login = get_object_or_404(User, sid=user_sid)
-    post_now = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        if user_login == post_now.user_now:
-            return render(request, 'pyq/edit.html', {
-                'post_edit': post_now,
-                'user_login': user_login,
-            })
-    return show(request, user_login)
-
-
-def post_edit_add(request, user_sid, post_id):
-    user_login = get_object_or_404(User, sid=user_sid)
-    post_now = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        if user_login == post_now.user_now:
-            post_nn = PostForms(request.POST)
-            if post_nn.is_valid():
-                context = post_nn.cleaned_data['context']
-                post_now.context = context
-                post_now.save()
-    return show(request, user_login)
-
-
-def post_delete(request, user_sid, post_id):
-    user_login = get_object_or_404(User, sid=user_sid)
-    post_now = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        if user_login == post_now.user_now or user_login.permission:
-            post_now.delete()
-    return show(request, user_login)
-
-
-def post_add(request, user_sid):
-    user_login = get_object_or_404(User, sid=user_sid)
-    if request.method == 'POST':
-        post_form = PostForms(request.POST)
-        if post_form.is_valid():
-            if request.POST['type_change'] == 'add':
-                context = post_form.cleaned_data['context']
-                nn_post = Post(
-                    user_now=user_login,
-                    context=context,
-                )
-                nn_post.save()
-    return show(request, user_login)
-'''
-
-
