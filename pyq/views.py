@@ -36,14 +36,6 @@ def post_action(request, pages, post_id):
             if post_form.is_valid():
                 context = post_form.cleaned_data['context']
                 Post.post_add(user_login, context)
-        elif request.POST['type_change'] == 'edit':
-            post_now = get_object_or_404(Post, pk=post_id)
-            if user_login == post_now.user_now:
-                return render(request, 'pyq/edit.html', {
-                    'post_edit': post_now,
-                    'user_login': user_login,
-                    'pages': pages,
-                })
         elif request.POST['type_change'] == 'delete':
             post_now = get_object_or_404(Post, pk=post_id)
             if user_login == post_now.user_now or user_login.permission:

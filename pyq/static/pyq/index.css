@@ -32,6 +32,14 @@ body.index{
     text-align: right;
 }
 
+.index .fieldset .self_post .edit_content{
+    display: block;
+}
+
+.index .fieldset .self_post  .edit_add_content{
+    display: none;
+}
+
 .index .fieldset h1{
     font-size: 16px;
 }

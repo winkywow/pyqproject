@@ -6,7 +6,17 @@
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'pyq/index.css' %}" />
+    <script type="text/javascript" src="{% static 'account/jquery-3.3.1.js' %}"></script>
 
+    <script>
+        $(document).ready(function() {
+            $(".edit_button").click(function(){
+                var tmp = '#' + $(this).attr('name');
+                $(tmp+'0').css({'display': 'none'});
+                $(tmp).css({'display': 'block'});
+            });
+        });
+    </script>
 </head>
 
 <body class="index">
@@ -36,16 +46,26 @@
 <div>
     <div id="post_list_item">
         {% for post in posts %}
-                <div class="fieldset">
+            <div class="fieldset">
                 {% if post.user_now == user_login %}
                     <div class="self_post">
-                    <h1><span>{{ post.user_now }}</span></h1>
-                    <p><content>{{ post.context }}&nbsp &nbsp &nbsp</content><br>
-                        created: {{ post.created_time }}&nbsp &nbsp &nbsp
-                        {% if post.edit_time != post.created_time %}
-                            edited
-                        {% endif %}
-                    </p>
+                        <p class="edit_content" id="post{{ post.pid }}0">
+                            <content>{{ post.context }}&nbsp &nbsp &nbsp</content><br>
+                            created: {{ post.created_time }}&nbsp &nbsp &nbsp
+                            {% if post.edit_time != post.created_time %}
+                                edited
+                            {% endif %}
+                        </p>
+                        <div class="edit_add_content" id="post{{ post.pid }}">
+                            <form action="{% url 'pyq:post_action' pages post.pid %}" method="post">
+                            {% csrf_token %}
+                            <div>
+                                <label><textarea name="context" placeholder="what do you want to post?">{{ post.context }}</textarea></label>
+                                <input type="hidden" name="type_change" value="edit_add"/>
+                                <input type="submit" value="submit" />
+                            </div>
+                            </form>
+                        </div>
                     </div>
                 {% else %}
                     <div class="not_self_post">
@@ -62,14 +82,7 @@
                     <tr>
                     <td>
                     {% if post.user_now == user_login %}
-                        <form action="{% url 'pyq:post_action' pages post.pid %}" method="post">
-                            {% csrf_token %}
-
-                            <input type="submit" value="edit"/>
-
-                            <input type="hidden" name="type_change" value="edit"/>
-
-                        </form>
+                        <button class="edit_button" name="post{{ post.pid }}">edit</button>
                     {% endif %}
                     </td>
                     <td>
@@ -89,11 +102,12 @@
                     </td>
                     </tr>
                     </table>
-                </div>
+            </div>
 
         {% endfor %}
     </div>
 </div>
+
 <div>
     {% if more_pages %}
         <form action="{% url 'pyq:post_action' pages user_login.id %}" method="post">
